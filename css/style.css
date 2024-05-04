@@ -148,9 +148,6 @@ input[type="checkbox"]:disabled {
   cursor: not-allowed;
 }
 
-/* #other-job-role {
-  display: none;
-} */
 
 select {
 	-webkit-appearance: none;

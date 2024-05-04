@@ -26,13 +26,13 @@
           
           <label for="name">Name: <span class="asterisk">*</span>
             <input type="text" id="name" name="user-name" class="error-border">
-            <span id="name-hint" class="name-hint hint">Name field cannot be blank</span>
+            <span id="name-error" class="name-hint hint">Name field cannot be blank</span>
           </label>
           
           
           <label for="email">Email Address: <span class="asterisk">*</span>
             <input type="email" id="email" name="user-email" class="error-border">
-            <span id="email-hint" class="email-hint hint">Email address must be formatted correctly</span>
+            <span id="email-error" class="email-hint hint">Email address must be formatted correctly</span>
           </label>
           
           
@@ -142,7 +142,7 @@
           </label>
         </div>
         <p id="activities-cost" class="activities-cost">Total: $0</p>
-        <p id="activities-hint" class="activities-hint hint">Choose at least one activity</p>        	
+        <p id="activities-error" class="activities-hint hint">Choose at least one activity</p>        	
       </fieldset>
 
       <fieldset class="payment-methods">
@@ -196,21 +196,21 @@
             <div class="num-box">
               <label for="cc-num">Card Number: <span class="asterisk">*</span>
                 <input id="cc-num" name="user-cc-num" type="text" class="error-border">
-                <span id="cc-hint" class="cc-hint hint">Credit card number must be between 13 - 16 digits</span>
+                <span id="cc-num-error" class="cc-hint hint">Credit card number must be between 13 - 16 digits</span>
               </label>
             </div>
 
             <div class="zip-box">
               <label for="zip">Zip Code: <span class="asterisk">*</span>
                 <input id="zip" name="user-zip" type="text" class="error-border">
-                <span id="zip-hint" class="zip-hint hint">Zip Code must be 5 digits</span>
+                <span id="zip-error" class="zip-hint hint">Zip Code must be 5 digits</span>
               </label>
             </div>
 
             <div class="cvv-box">
               <label for="cvv">CVV: <span class="asterisk">*</span>
                 <input id="cvv" name="user-cvv" type="text" class="error-border">
-                <span id="cvv-hint" class="cvv-hint hint">CVV must be 3 digits</span>
+                <span id="cvv-error" class="cvv-hint hint">CVV must be 3 digits</span>
               </label>
             </div>
           </div>           	         

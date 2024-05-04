@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (design) {
             colorSelect.previousElementSibling.textContent = 'Color:';
             colorSelect.hidden = false;
-            colorSelect.focus();  // Focus only if visible and a design is selected
             console.log(`Color select is shown and focused`);
         } else {
             colorSelect.previousElementSibling.textContent = 'Please select a T-shirt theme';
@@ -165,4 +164,168 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener for changes on the payment method select dropdown
     paymentSelect.addEventListener('change', showPaymentSection);
+});
+
+
+// STEP SIX - 
+
+/* Users shouldn’t be able to submit a form without the required information, or with invalid information. To prevent that from happening, avoid using plugins, libraries, snippets or the built-in HTML5 validation, and create your own custom form validation.
+
+Add an event listener to the form element to listen for the submit event. When the form submission is detected, each required form field or section should be validated to ensure that they have been filled out correctly. If any of the following required fields are not valid, the form submission should be prevented.
+The "Name" field cannot be blank or empty.
+The "Email Address" field must contain a correctly formatted email address. The email address does not need to be a real email address, just formatted like one. For example brian@teamtreehouse.com. Several characters for the username, preceded by "@", followed by another set of characters, ending with a "." and a couple more characters for the domain name.
+The "Register for Activities" section must have at least one activity selected.
+If and only if credit card is the selected payment method:
+The "Card number" field must contain a 13 - 16 digit credit card number without dashes or spaces. The value does not need to be a real credit card number.
+The "Zip code" field must contain a 5-digit number.
+The "CVV" field must contain a 3-digit number.
+
+Make the form validation errors obvious to all users. With the custom form validation checks you’ve already written, invalid form fields will prevent the form from submitting, but all users should be presented with clear notifications of which fields are invalid.
+
+When the user tries to submit the form, if a required form field or section is invalid:
+Add the ‘.not-valid’ class to the parent element of the form field or section. For the activity section, the parent element would be the fieldset element. For the other required inputs, the parent element would be a label element.
+Remove the ‘.valid’ class from the parent element of the form field or section.
+Display the .hint element associated with the form field or section.
+If a required form field or section is valid:
+Add the ‘.valid’ class to the parent element of the form field or section.
+Remove the ‘.not-valid’ class from the parent element of the form field or section.
+Hide the .hint element associated with that element.
+JavaScript alerts and prompts should not be used in your form validation error indications.
+If the user tries to submit an empty form, all form validation error indications should be displayed at once, rather than one at a time.*/ 
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
+
+    const form = document.querySelector('form');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const activitiesCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    const paymentSelect = document.getElementById('payment');
+    const creditCardNumber = document.getElementById('cc-num');
+    const zipCode = document.getElementById('zip');
+    const cvv = document.getElementById('cvv');
+    const activitiesFieldset = document.getElementById('activities');
+
+    const nameHint = document.getElementById('name-error');
+    const emailHint = document.getElementById('email-error');
+    const activitiesHint = document.getElementById('activities-error');
+    const creditCardHint = document.getElementById('cc-num-error');
+    const zipHint = document.getElementById('zip-error');
+    const cvvHint = document.getElementById('cvv-error');
+
+    function showError(inputElement, hintElement) {
+        console.log(`Attempting to show error for ${inputElement.id}`);
+        if (hintElement === null) {
+            console.error(`Hint element for ${inputElement.id} is null`);
+            return;
+        }
+        const parent = inputElement.parentElement;
+        parent.classList.add('not-valid');
+        parent.classList.remove('valid');
+        hintElement.style.display = 'block';
+    }
+    
+    function hideError(inputElement, hintElement) {
+        console.log(`Attempting to hide error for ${inputElement.id}`);
+        if (hintElement === null) {
+            console.error(`Hint element for ${inputElement.id} is null`);
+            return;
+        }
+        const parent = inputElement.parentElement;
+        parent.classList.add('valid');
+        parent.classList.remove('not-valid');
+        hintElement.style.display = 'none';
+    }
+    
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        let isValid = true;
+        console.log('Form submission attempted');
+
+        // Name validation
+        if (!nameInput.value.trim()) {
+            showError(nameInput, nameHint);
+            isValid = false;
+        } else {
+            hideError(nameInput, nameHint);
+        }
+
+        // Email validation
+        if (!/^[^@]+@[^@.]+\.[^@]+$/.test(emailInput.value)) {
+            showError(emailInput, emailHint);
+            isValid = false;
+        } else {
+            hideError(emailInput, emailHint);
+        }
+
+        // Activity validation
+        const isActivityChecked = Array.from(activitiesCheckboxes).some(checkbox => checkbox.checked);
+        if (!isActivityChecked) {
+            showError(activitiesFieldset, activitiesHint);
+            isValid = false;
+        } else {
+            hideError(activitiesFieldset, activitiesHint);
+        }
+
+        // Payment method-specific validation
+        if (paymentSelect.value === 'credit-card') {
+            console.log('Validating credit card information');
+            // Credit card number validation
+            if (!/^\d{13,16}$/.test(creditCardNumber.value)) {
+                showError(creditCardNumber, creditCardHint);
+                isValid = false;
+            } else {
+                hideError(creditCardNumber, creditCardHint);
+            }
+
+            // Zip code validation
+            if (!/^\d{5}$/.test(zipCode.value)) {
+                showError(zipCode, zipHint);
+                isValid = false;
+            } else {
+                hideError(zipCode, zipHint);
+            }
+
+            // CVV validation
+            if (!/^\d{3}$/.test(cvv.value)) {
+                showError(cvv, cvvHint);
+                isValid = false;
+            } else {
+                hideError(cvv, cvvHint);
+            }
+        }
+
+        if (!isValid) {
+            console.log('Validation failed, check errors.');
+            event.preventDefault(); // Preventing form submission again
+        } else {
+            console.log('Validation passed, submitting form.');
+            form.submit();
+        }
+    });
+});
+
+
+// STEP SEVEN 
+
+/* The Activities Section
+Pressing the tab key on your keyboard moves the focus state from one input to the next, but the focus indicators in the "Register for Activities" section aren’t very obvious. To make the form more accessible we'll add visible focus states to these activities. This will give the users that use keyboards to navigate your page a visual confirmation of where they are located.
+
+Program all of the activity checkbox input elements to listen for the focus and blur events.
+When the focus event is detected, add the ".focus" class to the checkbox input’s parent label element.
+When the blur event is detected, remove the .focus class from the label element that possesses it. It can be helpful here to directly target the element with the className of .focus in order to remove it. */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const activityCheckboxes = document.querySelectorAll('#activities input[type="checkbox"]');
+
+    activityCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('focus', (event) => {
+            checkbox.parentNode.classList.add('focus');
+        });
+
+        checkbox.addEventListener('blur', (event) => {
+            checkbox.parentNode.classList.remove('focus');
+        });
+    });
 });
