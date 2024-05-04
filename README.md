@@ -27,6 +27,10 @@ In this project, you'll use JavaScript to enhance an interactive registration fo
 - **Real-time Validation**: Check the validity of email addresses, credit card information, and other fields as the user types.
 - **Error Messaging**: Display error messages to the relevant input fields if the entered data fails validation checks.
 
+### View Live Form
+
+[Try out the Interactive Form](https://sallen1851.github.io/P3_InteractiveForm/)
+
 ### Preview of the Interactive Form
 
 ![Interactive Form](img/Interactive-form.png)
