@@ -212,7 +212,8 @@ document.addEventListener('DOMContentLoaded', function() {
         targetElement.classList.add('not-valid');
         targetElement.classList.remove('valid');
         hintElement.style.display = 'block'; 
-        console.log(`Showing error for ${inputElement.id}`);
+        inputElement.classList.add('error-border');
+        
     }
     
     function hideError(inputElement, hintElement) {
@@ -220,8 +221,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (targetElement.classList.contains('not-valid')) {
             targetElement.classList.remove('not-valid');
             targetElement.classList.add('valid');
-            hintElement.style.display = 'none'; 
-            console.log(`Hiding error for ${inputElement.id}`);
+            hintElement.style.display = 'none';
+            inputElement.classList.remove('error-border');
+           
         }
     }
     
