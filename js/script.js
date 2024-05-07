@@ -34,6 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log("DOM fully loaded and parsed");
 
+// Initially disable the color dropdown
+colorSelect.disabled = true;
+colorSelect.previousElementSibling.textContent = 'Please select a T-shirt theme';
+
+
     // Update color options based on the selected design
 function setShirtColorOptions(design) {
     // Enable the color select only if a valid design is chosen
