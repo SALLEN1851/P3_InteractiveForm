@@ -35,51 +35,40 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM fully loaded and parsed");
 
     // Update color options based on the selected design
-    function setShirtColorOptions(design) {
-        console.log(`Updating color options for design: ${design}`);
-        let hasSelected = false; // Flag to track if the first color has been selected
+function setShirtColorOptions(design) {
+    // Enable the color select only if a valid design is chosen
+    colorSelect.disabled = !design;
 
         // Update the visibility and selection of each color option
-        for (let i = 0; i < colorSelect.options.length; i++) {
-            const option = colorSelect.options[i];
+    for (let i = 0; i < colorSelect.options.length; i++) {
+        const option = colorSelect.options[i];
             console.log(`Processing option: ${option.value}, Theme: ${option.dataset.theme}`);
-            if (option.dataset.theme === design) {
-                option.hidden = false;
-                if (!hasSelected) {
-                    option.selected = true;
-                    hasSelected = true;
+        if (option.dataset.theme === design) {
+            option.hidden = false;
+            if (!hasSelected) {
+                option.selected = true;
+                hasSelected = true;
                     console.log(`First available color set to selected: ${option.value}`);
-                }
-            } else {
-                option.hidden = true;
-                option.selected = false;
             }
-        }
-
-        // Update the label and visibility based on whether a design has been selected
-        if (design) {
-            colorSelect.previousElementSibling.textContent = 'Color:';
-            colorSelect.hidden = false;
-            console.log(`Color select is shown and focused`);
         } else {
-            colorSelect.previousElementSibling.textContent = 'Please select a T-shirt theme';
-            colorSelect.hidden = true;
-            console.log(`Color select is hidden as no design is selected`);
+            option.hidden = true;
+            option.selected = false;
         }
     }
+    
+    // Update the label based on whether a design has been selected
+    colorSelect.previousElementSibling.textContent = design ? 'Color:' : 'Please select a T-shirt theme';
+}
 
-    // Initialize with no options visible - passing 'none' to handle no selection state properly
-    setShirtColorOptions('none');
+// Event listener for changes on the design select dropdown
+designSelect.addEventListener('change', function() {
+    const designMap = {
+        'js puns': 'js puns',
+        'heart js': 'heart js'
+    };
+    const selectedDesign = designMap[this.value] || '';
+    setShirtColorOptions(selectedDesign);
 
-    // Add event listener to the design select dropdown
-    designSelect.addEventListener('change', function() {
-        const designMap = {
-            'js puns': 'js puns',
-            'heart js': 'heart js'
-        };
-        const selectedDesign = designMap[this.value] || 'none';
-        console.log(`Design selected: ${this.value}, mapped to: ${selectedDesign}`);
-        setShirtColorOptions(selectedDesign);
     });
 });
 
@@ -214,32 +203,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const cvvHint = document.getElementById('cvv-error');
 
     function showError(inputElement, hintElement) {
-        console.log(`Attempting to show error for ${inputElement.id}`);
-        if (hintElement === null) {
-            console.error(`Hint element for ${inputElement.id} is null`);
-            return;
-        }
-        const parent = inputElement.parentElement;
-        parent.classList.add('not-valid');
-        parent.classList.remove('valid');
-        hintElement.style.display = 'block';
+        let targetElement = inputElement.parentElement;
+        targetElement.classList.add('not-valid');
+        targetElement.classList.remove('valid');
+        hintElement.style.display = 'block'; 
+        console.log(`Showing error for ${inputElement.id}`);
     }
     
     function hideError(inputElement, hintElement) {
-        console.log(`Attempting to hide error for ${inputElement.id}`);
-        if (hintElement === null) {
-            console.error(`Hint element for ${inputElement.id} is null`);
-            return;
+        let targetElement = inputElement.parentElement;
+        if (targetElement.classList.contains('not-valid')) {
+            targetElement.classList.remove('not-valid');
+            targetElement.classList.add('valid');
+            hintElement.style.display = 'none'; 
+            console.log(`Hiding error for ${inputElement.id}`);
         }
-        const parent = inputElement.parentElement;
-        parent.classList.add('valid');
-        parent.classList.remove('not-valid');
-        hintElement.style.display = 'none';
     }
     
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
+    function validateForm() {
         let isValid = true;
         console.log('Form submission attempted');
 
@@ -296,12 +277,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        if (!isValid) {
-            console.log('Validation failed, check errors.');
-            event.preventDefault(); // Preventing form submission again
-        } else {
+        return isValid;
+    }
+
+    // Attach validation handler to the form's submit event
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formIsValid = validateForm();
+        if (formIsValid) {
             console.log('Validation passed, submitting form.');
             form.submit();
+        } else {
+            console.log('Validation failed, check errors.');
         }
     });
 });
