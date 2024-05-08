@@ -208,24 +208,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const cvvHint = document.getElementById('cvv-error');
 
     function showError(inputElement, hintElement) {
-        let targetElement = inputElement.parentElement;
-        targetElement.classList.add('not-valid');
-        targetElement.classList.remove('valid');
-        hintElement.style.display = 'block'; 
-        inputElement.classList.add('error-border');
-        
+        inputElement.classList.add('not-valid', 'error-border');
+        inputElement.classList.remove('valid');
+        hintElement.style.display = 'block';
     }
     
     function hideError(inputElement, hintElement) {
-        let targetElement = inputElement.parentElement;
-        if (targetElement.classList.contains('not-valid')) {
-            targetElement.classList.remove('not-valid');
-            targetElement.classList.add('valid');
-            hintElement.style.display = 'none';
-            inputElement.classList.remove('error-border');
-           
-        }
+        inputElement.classList.remove('not-valid', 'error-border');
+        inputElement.classList.add('valid');
+        hintElement.style.display = 'none';
     }
+    
     
     function validateForm() {
         let isValid = true;
